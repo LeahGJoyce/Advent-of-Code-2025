@@ -91,7 +91,7 @@ def test_find_ids_in_range():
         result = find_ids_in_range(test_case["input"])
         expected = test_case["output"]
         assert result == expected, f"Test '{test_case['name']}' failed: Expected {expected}, got {result}"
-        print(f"Test '{test_case['name']}' passed!")
+        print(f"Test '{test_case['name']}' passed! Output: {result}")
 
 
 def test_sum_all_outputs():

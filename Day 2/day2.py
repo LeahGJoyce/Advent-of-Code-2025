@@ -42,8 +42,13 @@ def main():
     with open("input.txt", "r") as file:
         lines = file.read().strip().split("\n")
 
-    result = parse_input(lines)
-    print(result)
+    ranges = parse_input(lines)
+    total = 0
+    for range_str in ranges:
+        invalid_ids = find_ids_in_range(range_str)
+        total += sum(invalid_ids)
+    
+    print(f"Sum of all invalid IDs: {total}")
 
 
 if __name__ == "__main__":
