@@ -32,17 +32,47 @@ def parse_input(data):
     # Convert input to a 2D grid
     grid = [list(line.strip()) for line in data]
     
-    result = 0
+    iteration = 0
+    total_removed = 0
     
-    # Count @ symbols that have fewer than 4 adjacent @ symbols
-    for row in range(len(grid)):
-        for col in range(len(grid[0])):
-            if grid[row][col] == '@':
-                adjacent_count = count_adjacent_at_signs(grid, row, col)
-                if adjacent_count < 4:
-                    result += 1
+    # Iteratively remove @ symbols that have fewer than 4 adjacent @ symbols
+    while True:
+        iteration += 1
+        print(f"\nIteration {iteration}:")
+        print_grid(grid)
+        
+        # Find all @ symbols with fewer than 4 adjacent @ symbols
+        to_remove = []
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                if grid[row][col] == '@':
+                    adjacent_count = count_adjacent_at_signs(grid, row, col)
+                    if adjacent_count < 4:
+                        to_remove.append((row, col))
+        
+        # If no symbols to remove, we're done
+        if not to_remove:
+            print(f"\nNo more symbols to remove. Final iteration: {iteration - 1}")
+            break
+        
+        print(f"Removing {len(to_remove)} symbols: {to_remove}")
+        total_removed += len(to_remove)
+        
+        # Remove the symbols
+        for row, col in to_remove:
+            grid[row][col] = '.'
     
-    return result
+    # Count remaining @ symbols
+    remaining = sum(row.count('@') for row in grid)
+    print(f"\nTotal symbols removed: {total_removed}")
+    print(f"Remaining symbols: {remaining}")
+    return remaining
+
+
+def print_grid(grid):
+    """Print the current state of the grid."""
+    for row in grid:
+        print(''.join(row))
 
 
 def main():
