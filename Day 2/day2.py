@@ -15,27 +15,29 @@ def parse_input(data):
     return ranges
 
 def find_ids_in_range(range_str):
-    """Find invalid ID's in range using regex
+    """Find IDs made entirely of repeating patterns
 
     Args:
        range_str: A string in format "11-22"
 
     Returns:
-        A list of invalid ID's in the given range.
+        A list of IDs that are made entirely of a repeating pattern.
     """
     start, end = map(int, range_str.split("-"))
-    invalid_ids = []
+    ids_with_repeats = []
     
     for num in range(start, end + 1):
         num_str = str(num)
-        # Check if the number is a sequence repeated exactly twice
         length = len(num_str)
-        if length % 2 == 0:
-            mid = length // 2
-            if num_str[:mid] == num_str[mid:]:
-                invalid_ids.append(num)
+        # Check all possible pattern lengths
+        for pattern_len in range(1, length // 2 + 1):
+            if length % pattern_len == 0:
+                pattern = num_str[:pattern_len]
+                if pattern * (length // pattern_len) == num_str:
+                    ids_with_repeats.append(num)
+                    break
     
-    return invalid_ids
+    return ids_with_repeats
 
 def main():
     """Read input text, split into ranges, find invalid ID's in each range, add them together, print the result."""
